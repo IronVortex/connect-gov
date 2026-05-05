@@ -1,0 +1,10 @@
+.gitignore
+*.log
+node_modules/
+.env.local
+.next/
+dist/
+build/
+*.swp
+*.swo
+*~

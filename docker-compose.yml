@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: connect-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DB: connect-platform
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - connect-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: connect-backend
+    environment:
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/connect-platform
+      NODE_ENV: development
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend/src:/app/src
+    networks:
+      - connect-network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: connect-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - connect-network
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+
+networks:
+  connect-network:
+    driver: bridge
