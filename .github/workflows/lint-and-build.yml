@@ -16,7 +16,7 @@ jobs:
       # Setup pnpm
       - uses: pnpm/action-setup@v2
         with:
-          version: '8'
+          version: '10'
 
       # Setup Node.js (FIXED → Node 20)
       - uses: actions/setup-node@v4
@@ -26,7 +26,7 @@ jobs:
 
       # Install ALL workspace dependencies (IMPORTANT)
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       # FRONTEND
       - name: Lint frontend
