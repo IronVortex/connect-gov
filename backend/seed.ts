@@ -1,9 +1,13 @@
-import { connect, Connection } from 'mongoose';
-import { Department } from './src/schemas/department.schema';
-import { Service } from './src/schemas/service.schema';
+import { connect, model } from 'mongoose';
+import { Department, DepartmentSchema } from './src/schemas/department.schema';
+import { Service, ServiceSchema } from './src/schemas/service.schema';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
+
+// Create Mongoose models from schemas
+const DepartmentModel = model('Department', DepartmentSchema);
+const ServiceModel = model('Service', ServiceSchema);
 
 const seedData = async () => {
   try {
@@ -12,11 +16,11 @@ const seedData = async () => {
     console.log('Connected to MongoDB');
 
     // Clear existing data
-    await Department.deleteMany({});
-    await Service.deleteMany({});
+    await DepartmentModel.deleteMany({});
+    await ServiceModel.deleteMany({});
 
     // Create departments
-    const departments = await Department.create([
+    const departments = await DepartmentModel.create([
       {
         name: 'Department of Motor Vehicles',
         description: 'Driver licenses, vehicle registration, and related services',
@@ -47,7 +51,7 @@ const seedData = async () => {
     console.log(`✓ Created ${departments.length} departments`);
 
     // Create services
-    const services = await Service.create([
+    const services = await ServiceModel.create([
       {
         name: 'Driver License Renewal',
         description: 'Renew your existing driver license',
