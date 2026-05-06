@@ -1,7 +1,10 @@
 "use client";
 
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { Bell, FileText, LayoutDashboard, WalletCards } from "lucide-react";
 import { Department, DocumentStatus, Service, UploadedDocument } from "@/lib/types";
+import { getUnreadNotificationCount } from "@/lib/mock-notifications";
 
 type UploadState = {
   error?: string;
@@ -11,7 +14,29 @@ type UploadState = {
   uploading: boolean;
 };
 
-const navItems = ["Dashboard", "Services", "Document Wallet"];
+const navItems = [
+  {
+    label: "Dashboard",
+    href: "/",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "Services",
+    href: "#services",
+    icon: FileText,
+  },
+  {
+    label: "Document Wallet",
+    href: "#documents",
+    icon: WalletCards,
+  },
+  {
+    label: "Notifications",
+    href: "/notifications",
+    icon: Bell,
+    badge: getUnreadNotificationCount(),
+  },
+];
 const DEMO_USER_ID = "000000000000000000000001";
 
 const fallbackDepartmentNames: Record<string, string> = {
@@ -22,6 +47,7 @@ const fallbackDepartmentNames: Record<string, string> = {
 
 function getApiBaseUrl() {
   return (
+    process.env.NEXT_PUBLIC_API_URL ||
     process.env.NEXT_PUBLIC_API_BASE_URL ||
     "http://localhost:3001/api"
   ).replace(/\/$/, "");
@@ -244,15 +270,35 @@ export default function HomePage() {
           </div>
 
           <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
-            {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="rounded-md px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-white hover:text-[#007BFF]"
-              >
-                {item}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition ${
+                    item.label === "Dashboard"
+                      ? "bg-[#007BFF] text-white"
+                      : "text-slate-700 hover:bg-white hover:text-[#007BFF]"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                  {!!item.badge && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                        item.label === "Dashboard"
+                          ? "bg-white text-[#007BFF]"
+                          : "bg-[#007BFF] text-white"
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
         </aside>
 
@@ -263,7 +309,7 @@ export default function HomePage() {
             </div>
           )}
 
-          <div className="mb-8">
+          <div id="services" className="mb-8">
             <p className="text-sm font-semibold text-[#007BFF]">
               Connect Gov services
             </p>
@@ -316,7 +362,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <div>
+          <div id="documents">
             <h3 className="mb-4 text-xl font-semibold">Documents Required</h3>
             {!selectedService ? (
               <p className="rounded-md border border-slate-200 px-4 py-5 text-sm text-slate-600">

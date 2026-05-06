@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Connect Platform Backend API",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "author": "",
   "license": "ISC",
   "scripts": {

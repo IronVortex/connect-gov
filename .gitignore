@@ -17,7 +17,6 @@ node_modules
 .next/
 .DS_Store
 .pnpm-debug.log*
-pnpm-lock.yaml
 
 # NestJS
 dist/

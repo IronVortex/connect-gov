@@ -1,6 +1,10 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Bell, FileText, LayoutDashboard, WalletCards } from 'lucide-react';
 import { Department } from '@/lib/types';
+import { getUnreadNotificationCount } from '@/lib/mock-notifications';
 
 interface SidebarProps {
   departments: Department[];
@@ -13,6 +17,32 @@ export default function Sidebar({
   selectedDepartment,
   onDepartmentSelect,
 }: SidebarProps) {
+  const pathname = usePathname();
+  const unreadNotifications = getUnreadNotificationCount();
+  const navItems = [
+    {
+      label: 'Dashboard',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+    },
+    {
+      label: 'Services',
+      href: '/dashboard#services',
+      icon: FileText,
+    },
+    {
+      label: 'Document Wallet',
+      href: '/dashboard#documents',
+      icon: WalletCards,
+    },
+    {
+      label: 'Notifications',
+      href: '/notifications',
+      icon: Bell,
+      badge: unreadNotifications,
+    },
+  ];
+
   return (
     <aside className="w-64 overflow-y-auto border-r border-blue-100 bg-white">
       <div className="p-6">
@@ -31,6 +61,45 @@ export default function Sidebar({
         </div>
 
         <nav className="space-y-2">
+          <h3 className="mb-3 px-2 text-sm font-semibold text-slate-900">
+            Main
+          </h3>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              item.href === '/dashboard'
+                ? pathname === '/dashboard'
+                : pathname === item.href;
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-[#007BFF] text-white'
+                    : 'text-slate-700 hover:bg-blue-50 hover:text-[#007BFF]'
+                }`}
+              >
+                <Icon className="h-4 w-4" aria-hidden="true" />
+                <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                {!!item.badge && (
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                      isActive
+                        ? 'bg-white text-[#007BFF]'
+                        : 'bg-[#007BFF] text-white'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <nav className="mt-8 space-y-2 border-t border-blue-100 pt-6">
           <h3 className="mb-4 px-2 text-sm font-semibold text-slate-900">
             Departments
           </h3>

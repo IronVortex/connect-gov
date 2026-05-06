@@ -91,7 +91,7 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        <div className="w-80 min-w-0">
+        <div id="services" className="w-80 min-w-0">
           <Card className="h-full overflow-y-auto border-blue-100 shadow-sm">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-6">
@@ -112,7 +112,7 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        <div className="w-80 min-w-0">
+        <div id="documents" className="w-80 min-w-0">
           <Card className="h-full overflow-y-auto border-blue-100 shadow-sm">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-6">
