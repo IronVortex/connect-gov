@@ -13,19 +13,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
+      # Install pnpm (THIS FIXES YOUR ERROR)
       - uses: pnpm/action-setup@v2
         with:
           version: 10
 
+      # Install dependencies (ROOT ONLY)
       - run: pnpm install --frozen-lockfile
 
+      # Frontend
       - run: pnpm --filter frontend lint
       - run: pnpm --filter frontend build
 
+      # Backend
       - run: pnpm --filter backend lint
       - run: pnpm --filter backend build
