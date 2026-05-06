@@ -1,16 +1,10 @@
 services:
   - type: web
-    name: connect-frontend
-    runtime: node
-    rootDir: frontend
+    name: connect-backend
+    env: node
+    rootDir: backend
     buildCommand: pnpm install && pnpm build
     startCommand: pnpm start
     envVars:
-      - key: NEXT_PUBLIC_API_URL
-        value: https://connect-gov-backend.onrender.com/api
       - key: NODE_VERSION
-        value: 18
-        name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-        version: 9
+        value: 20
