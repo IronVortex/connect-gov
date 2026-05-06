@@ -7,37 +7,25 @@ on:
     branches: [main, develop]
 
 jobs:
-  lint-and-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      # Setup pnpm
-      - uses: pnpm/action-setup@v2
-        with:
-          version: '10'
-
-      # Setup Node.js (FIXED → Node 20)
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: 20
+          cache: pnpm
 
-      # Install ALL workspace dependencies (IMPORTANT)
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10
 
-      # FRONTEND
-      - name: Lint frontend
-        run: pnpm --filter frontend lint
+      - run: pnpm install --frozen-lockfile
 
-      - name: Build frontend
-        run: pnpm --filter frontend build
+      - run: pnpm --filter frontend lint
+      - run: pnpm --filter frontend build
 
-      # BACKEND
-      - name: Lint backend
-        run: pnpm --filter backend lint
-
-      - name: Build backend
-        run: pnpm --filter backend build
+      - run: pnpm --filter backend lint
+      - run: pnpm --filter backend build
