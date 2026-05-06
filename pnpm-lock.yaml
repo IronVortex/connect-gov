@@ -1,5 +1,10 @@
 lockfileVersion: '9.0'
 
+name: Setup pnpm
+uses: pnpm/action-setup@v2
+with:
+version: 9  
+
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false

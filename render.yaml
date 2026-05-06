@@ -10,3 +10,7 @@ services:
         value: https://connect-gov-backend.onrender.com/api
       - key: NODE_VERSION
         value: 18
+        name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+        version: 9
