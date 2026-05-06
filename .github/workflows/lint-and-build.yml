@@ -1,36 +1,37 @@
-name: Lint and Build
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # Setup Node
-      - uses: actions/setup-node@v4
+      # 1. Setup Node FIRST
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
-      # Install pnpm (THIS FIXES YOUR ERROR)
-      - uses: pnpm/action-setup@v2
+      # 2. Install pnpm SECOND (CRITICAL)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
         with:
           version: 10
+          run_install: false
 
-      # Install dependencies (ROOT ONLY)
-      - run: pnpm install --frozen-lockfile
+      # 3. Verify pnpm exists (debug safety)
+      - name: Check pnpm
+        run: pnpm -v
 
-      # Frontend
+      # 4. Install dependencies
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      # 5. Run frontend
       - run: pnpm --filter frontend lint
       - run: pnpm --filter frontend build
 
-      # Backend
+      # 6. Run backend
       - run: pnpm --filter backend lint
       - run: pnpm --filter backend build
