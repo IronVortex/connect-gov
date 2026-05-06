@@ -1,7 +1,6 @@
 'use client';
 
 import { Service } from '@/lib/types';
-import { Button } from '@/components/ui/button';
 
 interface ServiceSelectorProps {
   services: Service[];

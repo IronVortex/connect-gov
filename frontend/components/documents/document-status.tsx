@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { UploadedDocument, DocumentStatus as DocStatus } from '@/lib/types';
 
 interface DocumentStatusProps {
@@ -24,34 +23,34 @@ export default function DocumentStatus({ documents }: DocumentStatusProps) {
   const getStatusIcon = (status: DocStatus) => {
     switch (status) {
       case 'DETECTED':
-        return '✓';
+        return 'OK';
       case 'MISMATCH':
-        return '✗';
+        return '!';
       case 'UNKNOWN':
         return '?';
       default:
-        return '•';
+        return '-';
     }
   };
 
   return (
     <div className="space-y-3">
       {documents.length === 0 ? (
-        <p className="text-sm text-muted-foreground text-center py-8">
+        <p className="py-8 text-center text-sm text-muted-foreground">
           No documents uploaded yet
         </p>
       ) : (
         documents.map((doc) => (
           <div
             key={doc._id}
-            className="p-4 rounded-lg border-2 border-border hover:border-primary transition-colors"
+            className="rounded-lg border-2 border-border p-4 transition-colors hover:border-[#007BFF]"
           >
-            <div className="flex items-start justify-between gap-2 mb-2">
-              <h4 className="font-semibold text-sm text-foreground truncate flex-1">
+            <div className="mb-2 flex items-start justify-between gap-2">
+              <h4 className="flex-1 truncate text-sm font-semibold text-foreground">
                 {doc.fileName}
               </h4>
               <span
-                className={`text-xs font-bold px-2 py-1 rounded border ${getStatusColor(
+                className={`rounded border px-2 py-1 text-xs font-bold ${getStatusColor(
                   doc.status
                 )}`}
               >
@@ -71,26 +70,26 @@ export default function DocumentStatus({ documents }: DocumentStatusProps) {
             </div>
 
             {doc.status === 'DETECTED' && (
-              <div className="mt-2 p-2 bg-green-50 rounded border border-green-200">
+              <div className="mt-2 rounded border border-green-200 bg-green-50 p-2">
                 <p className="text-xs text-green-800">
-                  ✓ Document successfully identified as{' '}
+                  Document successfully identified as{' '}
                   <span className="font-semibold">{doc.detectedType}</span>
                 </p>
               </div>
             )}
 
             {doc.status === 'MISMATCH' && (
-              <div className="mt-2 p-2 bg-red-50 rounded border border-red-200">
+              <div className="mt-2 rounded border border-red-200 bg-red-50 p-2">
                 <p className="text-xs text-red-800">
-                  ✗ File format does not match expected type
+                  File format does not match expected type
                 </p>
               </div>
             )}
 
             {doc.status === 'UNKNOWN' && (
-              <div className="mt-2 p-2 bg-yellow-50 rounded border border-yellow-200">
+              <div className="mt-2 rounded border border-yellow-200 bg-yellow-50 p-2">
                 <p className="text-xs text-yellow-800">
-                  ? Unable to determine document type. Please verify manually.
+                  Unable to determine document type. Please verify manually.
                 </p>
               </div>
             )}

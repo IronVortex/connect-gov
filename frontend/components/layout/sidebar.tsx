@@ -1,8 +1,6 @@
 'use client';
 
 import { Department } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 
 interface SidebarProps {
   departments: Department[];
@@ -16,21 +14,28 @@ export default function Sidebar({
   onDepartmentSelect,
 }: SidebarProps) {
   return (
-    <aside className="w-64 bg-sidebar border-r border-sidebar-border overflow-y-auto">
+    <aside className="w-64 overflow-y-auto border-r border-blue-100 bg-white">
       <div className="p-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-sidebar-foreground">
-            Connect
-          </h1>
-          <p className="text-sm text-muted-foreground">Platform</p>
+        <div className="mb-8 flex items-center gap-3">
+          <img
+            src="/connectgov-logo.png"
+            alt="Connect Gov"
+            className="h-10 w-10 rounded-md border border-blue-100"
+          />
+          <div>
+            <h1 className="text-2xl font-bold text-slate-950">
+              Connect Gov
+            </h1>
+            <p className="text-sm text-slate-500">Citizen services</p>
+          </div>
         </div>
 
         <nav className="space-y-2">
-          <h3 className="text-sm font-semibold text-sidebar-foreground mb-4 px-2">
+          <h3 className="mb-4 px-2 text-sm font-semibold text-slate-900">
             Departments
           </h3>
           {departments.length === 0 ? (
-            <p className="text-sm text-muted-foreground px-2">
+            <p className="px-2 text-sm text-slate-500">
               No departments available
             </p>
           ) : (
@@ -38,10 +43,10 @@ export default function Sidebar({
               <button
                 key={dept._id}
                 onClick={() => onDepartmentSelect(dept._id)}
-                className={`w-full text-left px-4 py-2 rounded-md transition-colors text-sm font-medium ${
+                className={`w-full rounded-md px-4 py-2 text-left text-sm font-medium transition-colors ${
                   selectedDepartment === dept._id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent'
+                    ? 'bg-[#007BFF] text-white'
+                    : 'text-slate-700 hover:bg-blue-50 hover:text-[#007BFF]'
                 }`}
               >
                 {dept.name}
@@ -50,9 +55,9 @@ export default function Sidebar({
           )}
         </nav>
 
-        <div className="mt-8 pt-8 border-t border-sidebar-border">
-          <p className="text-xs text-muted-foreground text-center">
-            © 2026 Connect Platform
+        <div className="mt-8 border-t border-blue-100 pt-8">
+          <p className="text-center text-xs text-slate-500">
+            &copy; 2026 Connect Gov
           </p>
         </div>
       </div>

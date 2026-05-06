@@ -229,11 +229,18 @@ export default function HomePage() {
     <main className="min-h-screen bg-white text-slate-950">
       <div className="flex min-h-screen flex-col lg:flex-row">
         <aside className="border-b border-slate-200 bg-slate-50 px-6 py-6 lg:w-64 lg:border-b-0 lg:border-r">
-          <div className="mb-8">
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#007BFF]">
-              Connect Gov
-            </p>
-            <h1 className="mt-2 text-2xl font-bold">Dashboard</h1>
+          <div className="mb-8 flex items-center gap-3">
+            <img
+              src="/connectgov-logo.png"
+              alt="Connect Gov"
+              className="h-10 w-10 rounded-md border border-blue-100"
+            />
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-[#007BFF]">
+                Connect Gov
+              </p>
+              <h1 className="mt-1 text-2xl font-bold">Dashboard</h1>
+            </div>
           </div>
 
           <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
@@ -258,7 +265,7 @@ export default function HomePage() {
 
           <div className="mb-8">
             <p className="text-sm font-semibold text-[#007BFF]">
-              Frontend is running
+              Connect Gov services
             </p>
             <h2 className="mt-2 text-3xl font-bold text-slate-950">
               Services

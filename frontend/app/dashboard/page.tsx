@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Sidebar from '@/components/layout/sidebar';
 import DocumentUploader from '@/components/documents/document-uploader';
@@ -17,8 +16,6 @@ export default function DashboardPage() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activePanel, setActivePanel] = useState<'upload' | 'services' | 'status'>('upload');
-
   useEffect(() => {
     const loadDepartments = async () => {
       try {
@@ -63,20 +60,20 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-white">
       <Sidebar
         departments={departments}
         selectedDepartment={selectedDepartment}
         onDepartmentSelect={handleDepartmentSelect}
       />
 
-      {/* Main Content Area */}
       <div className="flex-1 flex gap-4 p-6 overflow-hidden">
-        {/* Left Panel - Document Upload */}
         <div className="flex-1 min-w-0">
-          <Card className="h-full overflow-y-auto">
+          <Card className="h-full overflow-y-auto border-blue-100 shadow-sm">
             <div className="p-6">
+              <p className="mb-2 text-sm font-semibold text-[#007BFF]">
+                Connect Gov Dashboard
+              </p>
               <h2 className="text-2xl font-bold text-foreground mb-6">
                 Document Upload
               </h2>
@@ -94,9 +91,8 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Middle Panel - Service Selection */}
         <div className="w-80 min-w-0">
-          <Card className="h-full overflow-y-auto">
+          <Card className="h-full overflow-y-auto border-blue-100 shadow-sm">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-6">
                 Services
@@ -116,9 +112,8 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Right Panel - Document Status */}
         <div className="w-80 min-w-0">
-          <Card className="h-full overflow-y-auto">
+          <Card className="h-full overflow-y-auto border-blue-100 shadow-sm">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-6">
                 Status

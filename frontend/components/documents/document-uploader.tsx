@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
+import { FileUp } from 'lucide-react';
 import { documentAPI } from '@/lib/api';
 import { UploadedDocument } from '@/lib/types';
 
@@ -18,7 +19,7 @@ export default function DocumentUploader({
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -34,19 +35,16 @@ export default function DocumentUploader({
       setError(null);
       setIsLoading(true);
 
-      // Validate file size
       if (file.size > MAX_FILE_SIZE) {
         setError('File size exceeds 5MB limit');
         return;
       }
 
-      // Create FormData
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('userId', 'temp-user-id'); // TODO: Get from auth
+      formData.append('userId', 'temp-user-id');
       formData.append('serviceId', serviceId);
 
-      // Upload document
       const uploadedDoc = await documentAPI.upload(formData);
       onUpload(uploadedDoc);
     } catch (err: any) {
@@ -80,16 +78,25 @@ export default function DocumentUploader({
 
   return (
     <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-[#007BFF]">
+          Connect Gov Secure Upload
+        </p>
+        <h3 className="mt-1 text-lg font-semibold text-slate-950">
+          Upload required documents
+        </h3>
+      </div>
+
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
-        className={`relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+        className={`relative cursor-pointer rounded-xl border-2 border-dashed p-12 text-center transition-all ${
           isDragging
-            ? 'border-primary bg-blue-50 scale-105'
-            : 'border-border hover:border-primary hover:bg-muted/50'
-        } ${isLoading ? 'opacity-50 pointer-events-none' : ''}`}
+            ? 'scale-105 border-[#007BFF] bg-blue-50'
+            : 'border-border hover:border-[#007BFF] hover:bg-blue-50/50'
+        } ${isLoading ? 'pointer-events-none opacity-50' : ''}`}
       >
         <input
           ref={fileInputRef}
@@ -101,12 +108,12 @@ export default function DocumentUploader({
         />
 
         <div className="space-y-3">
-          <div className="text-4xl">📄</div>
+          <FileUp className="mx-auto h-10 w-10 text-[#007BFF]" aria-hidden="true" />
           <div>
             <p className="font-semibold text-foreground">
               {isLoading ? 'Uploading...' : 'Drag and drop your document'}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="mt-1 text-sm text-muted-foreground">
               or click to browse
             </p>
           </div>
@@ -117,22 +124,22 @@ export default function DocumentUploader({
       </div>
 
       {error && (
-        <div className="p-4 rounded-lg border border-red-300 bg-red-50">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-4">
           <p className="text-sm text-red-800">
             <span className="font-semibold">Error:</span> {error}
           </p>
         </div>
       )}
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-sm text-blue-900 mb-2">
-          Document Detection Guide
+      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <h4 className="mb-2 text-sm font-semibold text-blue-900">
+          Connect Gov Document Guide
         </h4>
-        <ul className="text-xs text-blue-800 space-y-1">
-          <li>• Files are automatically detected and categorized</li>
-          <li>• DETECTED: Document type successfully identified</li>
-          <li>• MISMATCH: File type doesn&apos;t match filename</li>
-          <li>• UNKNOWN: Could not determine document type</li>
+        <ul className="space-y-1 text-xs text-blue-800">
+          <li>Files are automatically detected and categorized.</li>
+          <li>DETECTED: Document type successfully identified.</li>
+          <li>MISMATCH: File type does not match filename.</li>
+          <li>UNKNOWN: Could not determine document type.</li>
         </ul>
       </div>
     </div>
