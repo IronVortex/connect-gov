@@ -7,52 +7,37 @@ on:
     branches: [main, develop]
 
 jobs:
-  lint-frontend:
+  lint-and-build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      # Setup pnpm
       - uses: pnpm/action-setup@v2
         with:
           version: '8'
-      - uses: actions/setup-node@v3
+
+      # Setup Node.js (FIXED → Node 20)
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
-          cache-dependency-path: 'frontend/pnpm-lock.yaml'
 
+      # Install ALL workspace dependencies (IMPORTANT)
       - name: Install dependencies
-        run: pnpm install
-        working-directory: frontend
+        run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-        working-directory: frontend
+      # FRONTEND
+      - name: Lint frontend
+        run: pnpm --filter frontend lint
 
-      - name: Build
-        run: pnpm build
-        working-directory: frontend
+      - name: Build frontend
+        run: pnpm --filter frontend build
 
-  lint-backend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: '8'
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'pnpm'
-          cache-dependency-path: 'backend/pnpm-lock.yaml'
+      # BACKEND
+      - name: Lint backend
+        run: pnpm --filter backend lint
 
-      - name: Install dependencies
-        run: pnpm install
-        working-directory: backend
-
-      - name: Lint
-        run: pnpm lint
-        working-directory: backend
-
-      - name: Build
-        run: pnpm build
-        working-directory: backend
+      - name: Build backend
+        run: pnpm --filter backend build
